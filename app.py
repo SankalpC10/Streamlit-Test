@@ -22,14 +22,13 @@ def recommend_movie(movie):
         # recommended_movies_posters.append(fetch_poster(movie_id))
     return recommended_movies
 
-movies_dict=pickle.load(open('movie_dict.pkl','rb'))
+movies_dict = pickle.load(open('movie_dict.pkl','rb'))
 movies = pd.DataFrame(movies_dict)
 similarity_matrix=pickle.load(open('similarity_matrix.pkl','rb'))
 
 st.title('Movie Recommendor System')
 
 selected_movie_name =st.selectbox('How would you liked to be contacted?',movies['title'].values)
-
 
 if st.button('Recommend'):
     recommendations =recommend_movie(selected_movie_name)
