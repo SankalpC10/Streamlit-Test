@@ -10,6 +10,7 @@ import requests
 #    #print("https://api.themoviedb.org/3/movie/"+data['poster_path'])
 #    return "https://api.themoviedb.org/3/movie/"+data['poster_path']
 
+
 def recommend_movie(movie):
     movie_index = movies[movies['title'] == movie].index[0]
     distances = similarity_matrix[movie_index]
