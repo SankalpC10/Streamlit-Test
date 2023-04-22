@@ -29,6 +29,7 @@ movies_dict=pickle.load(md)
 movies = pd.DataFrame(movies_dict)
 similarity_matrix=pickle.load(open('similarity_matrix.pkl','rb'))
 
+
 st.title('Movie Recommendor System')
 
 selected_movie_name =st.selectbox('How would you liked to be contacted?',movies['title'].values)
