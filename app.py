@@ -40,15 +40,15 @@ def get_recommendations(title):
     return movies_df['title'].iloc[movie_indices].values
 
 st.title('Movie Recommendor System')
-# Testing the recommendation function
-# selected_movie_name =st.selectbox('How would you liked to be contacted?',movies_df['title'].values)
-# if st.button('Recommend'):
-#     recommendations =get_recommendations(selected_movie_name)
-#     st.text(recommendations[0])
-#     st.text(recommendations[1])
-#     st.text(recommendations[2])
-#     st.text(recommendations[3])
-#     st.text(recommendations[4])
+#Testing the recommendation function
+selected_movie_name =st.selectbox('How would you liked to be contacted?',movies_df['title'].values)
+if st.button('Recommend'):
+    recommendations =get_recommendations(selected_movie_name)
+    st.text(recommendations[0])
+    st.text(recommendations[1])
+    st.text(recommendations[2])
+    st.text(recommendations[3])
+    st.text(recommendations[4])
 
 # title = st.text_input('Movie title', 'Avatar')
 # if st.button('Recommend'):
