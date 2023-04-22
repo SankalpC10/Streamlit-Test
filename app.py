@@ -50,6 +50,7 @@ if st.button('Recommend'):
     st.text(recommendations[3])
     st.text(recommendations[4])
 
+
 # title = st.text_input('Movie title', 'Avatar')
 # if st.button('Recommend'):
 #     recommendations =get_recommendations(title)
