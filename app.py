@@ -36,6 +36,7 @@ with gzip.open('similarity_matrix.pkl', 'rb') as f:
     similarity_matrix = pickle.load(f, fix_imports=True, encoding='latin1')
 
 
+
 st.title('Movie Recommendor System')
 
 selected_movie_name =st.selectbox('How would you liked to be contacted?',movies['title'].values)
