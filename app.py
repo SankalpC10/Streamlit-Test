@@ -41,12 +41,25 @@ def get_recommendations(title):
 
 st.title('Movie Recommendor System')
 # Testing the recommendation function
-selected_movie_name =st.selectbox('How would you liked to be contacted?',movies_df['title'].values)
+# selected_movie_name =st.selectbox('How would you liked to be contacted?',movies_df['title'].values)
+# if st.button('Recommend'):
+#     recommendations =get_recommendations(selected_movie_name)
+#     st.text(recommendations[0])
+#     st.text(recommendations[1])
+#     st.text(recommendations[2])
+#     st.text(recommendations[3])
+#     st.text(recommendations[4])
+
+title = st.text_input('Movie title', 'Avatar')
 if st.button('Recommend'):
-    recommendations =get_recommendations(selected_movie_name)
+    recommendations =get_recommendations(title)
     st.text(recommendations[0])
     st.text(recommendations[1])
     st.text(recommendations[2])
     st.text(recommendations[3])
     st.text(recommendations[4])
-
+    st.text(recommendations[5])
+    st.text(recommendations[6])
+    st.text(recommendations[7])
+    st.text(recommendations[8])
+    st.text(recommendations[9])
