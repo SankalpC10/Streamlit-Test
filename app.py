@@ -108,11 +108,11 @@ def recommend(movie):
 # movies = pd.DataFrame(movies_dict)
 # similarity_matrix=pickle.load(open('similarity_matrix.pkl','rb'))
 
+recommend('Batman')
 
-
-selected_movie_name =st.selectbox('How would you liked to be contacted?',movies['title'].values)
-if st.button('Recommend'):
-    recommend(selected_movie_name)
+# selected_movie_name =st.selectbox('How would you liked to be contacted?',movies['title'].values)
+# if st.button('Recommend'):
+#     recommend(selected_movie_name)
 #     recommendations =recommend(selected_movie_name)
 #     st.text(recommendations[0])
 #     st.text(recommendations[1])
