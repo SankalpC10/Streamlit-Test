@@ -1,50 +1,67 @@
-import gzip,pickle
-import pandas as pd
+# Importing necessary libraries
 import streamlit as st
-import requests
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
+# Reading in the movie data
+movies_df = pd.read_csv('tmdb_5000_movies.csv')
 
-# def fetch_poster(movie_id):
-#    response=requests.get('https://api.themoviedb.org/3/movie/{}?api_key=72e60e8287ff77423bfa32b8c904e3dd&language=en-US'.format(movie_id))
-#    data=response.json()
-#    #print("https://api.themoviedb.org/3/movie/"+data['poster_path'])
-#    return "https://api.themoviedb.org/3/movie/"+data['poster_path']
+# Creating a TF-IDF vectorizer
+tfidf = TfidfVectorizer(stop_words='english')
 
+# Fitting and transforming the TF-IDF vectorizer on the 'overview' column
+tfidf_matrix = tfidf.fit_transform(movies_df['overview'].fillna(''))
 
-def recommend_movie(movie):
-    movie_index = movies[movies['title'] == movie].index[0]
-    distances = similarity_matrix[movie_index]
-    movies_list = sorted(list(enumerate(distances)), reverse=True, key=lambda x: x[1])[1:6]
-    recommended_movies=[]
-    recommended_movies_posters=[]
-    for i in movies_list:
-        movie_id=movies.iloc[i[0]].movie_id
-        recommended_movies.append(movies.iloc[i[0]].title)
-        # recommended_movies_posters.append(fetch_poster(movie_id))
-    return recommended_movies
+# Computing the cosine similarity matrix
+cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
 
+# Creating a reverse mapping of movie titles and their indices
+indices = pd.Series(movies_df.index, index=movies_df['title']).drop_duplicates()
 
-# movies_dict = pickle.load(open('movie_dict.pkl','rb'))
-# movies = pd.DataFrame(movies_dict)
-# similarity_matrix=pickle.load(open('similarity_matrix.pkl','rb'))
+# Defining a function to get recommendations based on movie title
+def get_recommendations(title):
+    # Getting the index of the movie that matches the title
+    idx = indices[title]
 
-with gzip.open('movie_dict.pkl', 'rb') as f:
-    movies_dict = pickle.load(f, fix_imports=True, encoding='latin1')
-movies = pd.DataFrame(movies_dict)
+    # Getting the pairwise similarity scores of all movies with that movie
+    sim_scores = list(enumerate(cosine_sim[idx]))
 
-with gzip.open('similarity_matrix.pkl', 'rb') as f:
-    similarity_matrix = pickle.load(f, fix_imports=True, encoding='latin1')
+    # Sorting the movies based on the similarity scores
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
 
+    # Getting the top 10 most similar movies
+    sim_scores = sim_scores[1:11]
+
+    # Getting the movie indices
+    movie_indices = [i[0] for i in sim_scores]
+
+    # Returning the top 10 most similar movies
+    return movies_df['title'].iloc[movie_indices].values
 
 
 st.title('Movie Recommendor System')
-
-selected_movie_name =st.selectbox('How would you liked to be contacted?',movies['title'].values)
-
+#Testing the recommendation function
+selected_movie_name =st.selectbox('How would you liked to be contacted?',movies_df['title'].values)
 if st.button('Recommend'):
-    recommendations =recommend_movie(selected_movie_name)
+    recommendations =get_recommendations(selected_movie_name)
     st.text(recommendations[0])
     st.text(recommendations[1])
     st.text(recommendations[2])
     st.text(recommendations[3])
     st.text(recommendations[4])
+
+
+# title = st.text_input('Movie title', 'Avatar')
+# if st.button('Recommend'):
+#     recommendations =get_recommendations(title)
+#     st.text(recommendations[0])
+#     st.text(recommendations[1])
+#     st.text(recommendations[2])
+#     st.text(recommendations[3])
+#     st.text(recommendations[4])
+#     st.text(recommendations[5])
+#     st.text(recommendations[6])
+#     st.text(recommendations[7])
+#     st.text(recommendations[8])
+#     st.text(recommendations[9])
