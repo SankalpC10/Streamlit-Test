@@ -1,4 +1,4 @@
-import pickle
+import gzip,pickle
 import pandas as pd
 import streamlit as st
 import requests
@@ -24,9 +24,16 @@ def recommend_movie(movie):
     return recommended_movies
 
 
-movies_dict = pickle.load(open('movie_dict.pkl','rb'))
+# movies_dict = pickle.load(open('movie_dict.pkl','rb'))
+# movies = pd.DataFrame(movies_dict)
+# similarity_matrix=pickle.load(open('similarity_matrix.pkl','rb'))
+
+with gzip.open('movie_dict.pkl', 'rb') as f:
+    movies_dict = pickle.load(f, fix_imports=True, encoding='latin1')
 movies = pd.DataFrame(movies_dict)
-similarity_matrix=pickle.load(open('similarity_matrix.pkl','rb'))
+
+with gzip.open('similarity_matrix.pkl', 'rb') as f:
+    similarity_matrix = pickle.load(f, fix_imports=True, encoding='latin1')
 
 st.title('Movie Recommendor System')
 
